@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: user-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/user_service
+    username: postgres
+    password: YOUR_PASSWORD
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    show-sql: true
+  hibernate:
+    ddl-auto: true
+  properties:
+    hibernate:
+      dialect: org.hibernate.dialect.PostgreSqlDialect
+  flyway:
+    enabled: true
+    location: classpath:db/migration
+server:
+  port: 8088
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+app:
+  encryption:
+    active-key-version: v2
+    keys:
+      v1: YOUR_KEY
+      v2: YOUR_KEY
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+security:
+  jwt:
+    secret: YOUR_SECRET_KEY
+    expiration: 3600000

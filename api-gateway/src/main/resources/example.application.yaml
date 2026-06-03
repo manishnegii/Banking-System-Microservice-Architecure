@@ -1,0 +1,41 @@
+spring:
+  application:
+    name: api-gateway
+  main:
+    web-application-type: reactive
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+
+            - id: USER
+              uri: lb://USER-SERVICE
+              predicates:
+                - Path=/api/v1/customers/**
+
+            - id: ACCOUNT
+              uri: lb://ACCOUNT-SERVICE
+              predicates:
+                - Path=/api/v1/account/**
+
+            - id: TRANSACTION
+              uri: lb://TRANSACTION-SERVICE
+              predicates:
+                - Path=/api/v1/transaction/**
+
+            - id: NOTIFICATION
+              uri: lb://NOTIFICATION-SERVICE
+              predicates:
+                - Path=/api/v1/notification/**
+  jwt:
+    secret: YOUR_SECRET_KEY
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+server:
+  port: 8089
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
