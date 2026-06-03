@@ -9,12 +9,12 @@ This is a multi-module Maven project with the following services:
 ### Core Services
 
 - **account-service** - Account management and operations
-- **transaction-service** - Transaction processing and management
+- **transaction-service** - Transaction processing and management(In progress)
 - **user-service** - User profile and management
 - **auth-service** - Authentication and authorization
-- **ledger-service** - Financial ledger and balance tracking
-- **notification-service** - Notification delivery (email, SMS, etc.)
-- **audit-service** - Audit logging and compliance
+- **ledger-service** - Financial ledger and balance tracking(In progress)
+- **notification-service** - Notification delivery (email, SMS, etc.)(In progress)
+- **audit-service** - Audit logging and compliance(In progress)
 
 ### Infrastructure
 
