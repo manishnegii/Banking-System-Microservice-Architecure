@@ -1,7 +1,9 @@
 package com.spring.transaction_service.controller;
 
+import com.spring.transaction_service.entity.TransactionalStatus;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.TransactionStatus;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -27,9 +29,9 @@ public class TransactionController {
 
     @PostMapping("/transfer-money")
     public ResponseEntity<ApiResponse<TransactionResponseDTO>> transferMoney(
-            @Valid @RequestBody TransactionRequestDTO requestDTO) {
+            @Valid @RequestBody TransactionRequestDTO requestDTO, @RequestHeader("Idempotency-Key") String idempotencyKey) {
         try {
-            TransactionResponseDTO response = transactionService.transferMoney(requestDTO);
+            TransactionResponseDTO response = transactionService.transferMoney(requestDTO,idempotencyKey);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(new ApiResponse<>(true, "Money transfer initiated successfully", response));
         } catch (DuplicateTransactionException e) {
@@ -85,9 +87,9 @@ public class TransactionController {
 
     // ======================== CHECK STATUS ========================
     @GetMapping("/check-status/{transactionId}")
-    public ResponseEntity<ApiResponse<String>> checkStatus(@PathVariable Long transactionId) {
+    public ResponseEntity<ApiResponse<TransactionalStatus>> checkStatus(@PathVariable Long transactionId) {
         try {
-            String status = transactionService.checkTransactionStatus(transactionId);
+            var status = transactionService.checkTransactionStatus(transactionId);
             return ResponseEntity.ok(new ApiResponse<>(true, "Transaction status retrieved successfully", status));
         } catch (TransactionNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)

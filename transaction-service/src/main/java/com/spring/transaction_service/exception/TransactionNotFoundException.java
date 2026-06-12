@@ -1,20 +1,22 @@
 package com.spring.transaction_service.exception;
 
-public class TransactionNotFoundException extends RuntimeException {
+import org.springframework.http.HttpStatus;
 
-    private String errorCode;
+public class TransactionNotFoundException extends CustomException {
 
-    public TransactionNotFoundException(String message) {
-        super(message);
-        this.errorCode = "TXN_NOT_FOUND";
+    private static final String ERROR_CODE = "TRANSCATION_NOT_FOUND";
+
+    public TransactionNotFoundException() {
+        super("Transaction not found");
     }
 
-    public TransactionNotFoundException(String message, String errorCode) {
-        super(message);
-        this.errorCode = errorCode;
-    }
-
+    @Override
     public String getErrorCode() {
-        return errorCode;
+        return ERROR_CODE;
+    }
+
+    @Override
+    public HttpStatus getStatus() {
+        return HttpStatus.NOT_FOUND;
     }
 }

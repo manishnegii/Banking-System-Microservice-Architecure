@@ -1,9 +1,10 @@
 -- V1__Create_transactions_table.sql
 CREATE TABLE IF NOT EXISTS transactions (
-    transaction_id UUID PRIMARY KEY,
+    id BIGSERIAL PRIMARY KEY,
+    transaction_id VARCHAR(100) NOT NULL,
     user_id BIGINT NOT NULL,
-    from_account_id BIGINT NOT NULL,
-    to_account_id BIGINT NOT NULL,
+    from_account_number VARCHAR(64) NOT NULL,
+    to_account_number VARCHAR(64) NOT NULL,
     amount DECIMAL(19, 2) NOT NULL,
     transaction_type VARCHAR(50) NOT NULL,
     payment_method VARCHAR(50) NOT NULL,

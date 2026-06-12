@@ -2,11 +2,10 @@ package com.spring.transaction_service.exception;
 
 import org.springframework.http.HttpStatus;
 
-public class InvalidTransactionException extends CustomException {
+public class TransactionFailedException extends CustomException {
+    private static final String ERROR_CODE = "TRANSACTION_FAILED";
 
-    private static final String ERROR_CODE = "INVALID_TRANSACTION";
-
-    public InvalidTransactionException(String message) {
+    public TransactionFailedException(String message) {
         super(message);
     }
 
@@ -17,6 +16,6 @@ public class InvalidTransactionException extends CustomException {
 
     @Override
     public HttpStatus getStatus() {
-        return HttpStatus.BAD_REQUEST;
+        return HttpStatus.NOT_FOUND;
     }
 }

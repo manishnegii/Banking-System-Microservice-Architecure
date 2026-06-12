@@ -19,17 +19,20 @@ public class Transaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "transaction_id")
-    private Long transactionId;
+    @Column(name = "id")
+    private Long id;
+
+    @Column(name = "transaction_id",unique = true,nullable = false)
+    private String transactionId;
 
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
-    @Column(name = "from_account_id", nullable = false)
-    private Long fromAccountId;
+    @Column(name = "from_account_number", nullable = false)
+    private Long fromAccountNumber;
 
-    @Column(name = "to_account_id", nullable = false)
-    private Long toAccountId;
+    @Column(name = "to_account_number", nullable = false)
+    private Long toAccountNumber;
 
     @Column(name = "amount", nullable = false, precision = 19, scale = 2)
     private BigDecimal amount;
@@ -50,9 +53,9 @@ public class Transaction {
     private String gatewayTxnId;
 
     @Column(name = "status", nullable = false)
-    private String status;
+    private TransactionalStatus status;
 
-    @Column(name = "idempotency_key", unique = true)
+    @Column(name = "idempotency_key", unique = true, nullable = false)
     private String idempotencyKey;
 
     @Column(name = "failure_reason", columnDefinition = "TEXT")

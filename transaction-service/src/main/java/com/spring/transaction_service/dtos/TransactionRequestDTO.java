@@ -13,31 +13,13 @@ import java.math.BigDecimal;
 @Builder
 public class TransactionRequestDTO {
 
-    @NotNull(message = "User ID is required")
-    private Long userId;
+    @NotNull(message = "From Account is required")
+    private Long fromAccountNumber;
 
-    @NotNull(message = "From Account ID is required")
-    private Long fromAccountId;
-
-    @NotNull(message = "To Account ID is required")
-    private Long toAccountId;
+    @NotNull(message = "To Account is required")
+    private Long toAccountNumber;
 
     @NotNull(message = "Amount is required")
     @DecimalMin(value = "0.01", message = "Amount must be greater than 0")
     private BigDecimal amount;
-
-    @NotBlank(message = "Transaction type is required")
-    private String transactionType;
-
-    @NotBlank(message = "Payment method is required")
-    private String paymentMethod;
-
-    private String merchantId;
-
-    private String upiId;
-
-    @NotBlank(message = "Idempotency key is required")
-    private String idempotencyKey;
-
-    private String gatewayTxnId;
 }

@@ -1,17 +1,17 @@
--- V2__Create_payment_gateway_logs_table.sql
-CREATE TABLE IF NOT EXISTS payment_gateway_logs (
-    log_id BIGSERIAL PRIMARY KEY,
-    txn_id UUID NOT NULL,
-    gateway_name VARCHAR(100) NOT NULL,
-    request_payload TEXT,
-    response_payload TEXT,
-    gateway_status VARCHAR(50) NOT NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT fk_transaction FOREIGN KEY (txn_id) REFERENCES transactions(transaction_id) ON DELETE CASCADE
-);
-
-CREATE INDEX idx_txn_id (txn_id);
-CREATE INDEX idx_gateway_name (gateway_name);
-CREATE INDEX idx_gateway_status (gateway_status);
-CREATE INDEX idx_created_at (created_at);
-CREATE INDEX idx_txn_created_at (txn_id, created_at);
+-- -- V2__Create_payment_gateway_logs_table.sql
+-- CREATE TABLE IF NOT EXISTS payment_gateway_logs (
+--     log_id BIGSERIAL PRIMARY KEY,
+--     txn_id bigint NOT NULL,
+--     gateway_name VARCHAR(100) NOT NULL,
+--     request_payload TEXT,
+--     response_payload TEXT,
+--     gateway_status VARCHAR(50) NOT NULL,
+--     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+--     CONSTRAINT fk_transaction FOREIGN KEY (txn_id) REFERENCES transactions(id) ON DELETE CASCADE
+-- );
+--
+-- CREATE INDEX idx_txn_id (txn_id);
+-- CREATE INDEX idx_gateway_name (gateway_name);
+-- CREATE INDEX idx_gateway_status (gateway_status);
+-- CREATE INDEX idx_created_at (created_at);
+-- CREATE INDEX idx_txn_created_at (txn_id, created_at);
