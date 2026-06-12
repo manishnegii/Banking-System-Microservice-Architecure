@@ -1,9 +1,6 @@
 package com.spring.account_service.controller;
 
-import com.spring.account_service.dto.AccountResponseDto;
-import com.spring.account_service.dto.BalanceResponseDto;
-import com.spring.account_service.dto.CreateAccountRequestDto;
-import com.spring.account_service.dto.UpdateAccountRequestDto;
+import com.spring.account_service.dto.*;
 import com.spring.account_service.service.AccountService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -35,9 +32,9 @@ public class AccountController {
 
 
 
-    @GetMapping("/{accountId}")
-    public ResponseEntity<AccountResponseDto> getAccountDetails(@PathVariable Long accountId) {
-        return ResponseEntity.ok(accountService.getAccountDetails(accountId));
+    @PostMapping("/accountNumber")
+    public ResponseEntity<AccountResponseDto> getAccountDetails(@Valid @RequestBody AccountNumberRequestDto requestDto) {
+        return ResponseEntity.ok(accountService.getAccountDetails(requestDto));
     }
 
     @GetMapping("/{accountId}/balance")

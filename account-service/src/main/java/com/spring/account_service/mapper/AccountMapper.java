@@ -1,9 +1,8 @@
 package com.spring.account_service.mapper;
 
-import com.spring.account_service.dto.AccountResponseDto;
-import com.spring.account_service.dto.CreateAccountRequestDto;
-import com.spring.account_service.dto.UpdateAccountRequestDto;
+import com.spring.account_service.dto.*;
 import com.spring.account_service.entity.Account;
+import com.spring.account_service.entity.AccountOperations;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -14,7 +13,11 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface AccountMapper {
 
+    AccountOperations operationalEntity(OperationalRequestDto requestDto);
+
     AccountResponseDto toResponseDto(Account account);
+
+    BalanceResponseDto toBalanceResponseDto(Account account);
 
     @Mapping(target = "accountId", ignore = true)
     @Mapping(target = "status", expression = "java(com.spring.account_service.entity.AccountStatus.ACTIVE)")

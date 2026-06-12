@@ -3,6 +3,7 @@ package com.spring.account_service.service;
 import com.rexchord.common_security.model.CustomUserPrincipal;
 import com.spring.account_service.client.UserClient;
 import com.spring.account_service.client.dto.CustomerResponse;
+import com.spring.account_service.dto.AccountNumberRequestDto;
 import com.spring.account_service.dto.AccountResponseDto;
 import com.spring.account_service.dto.BalanceResponseDto;
 import com.spring.account_service.dto.CreateAccountRequestDto;
@@ -65,20 +66,15 @@ public class AccountService {
 
 
 
-    public AccountResponseDto getAccountDetails(Long accountId) {
-        var account = requireAccount(accountId);
+    public AccountResponseDto getAccountDetails(AccountNumberRequestDto requestDto) {
+        var account = accountRepository.findByAccountNumber(requestDto.getAccountNumber());
         return accountMapper.toResponseDto(account);
     }
 
 
     public BalanceResponseDto checkBalance(Long accountId) {
         var account = requireAccount(accountId);
-        return BalanceResponseDto.builder()
-            .accountId(account.getAccountId())
-            .balance(account.getBalance())
-            .currency(account.getCurrency())
-            .status(account.getStatus())
-            .build();
+        return accountMapper.toBalanceResponseDto(account);
     }
 
 
