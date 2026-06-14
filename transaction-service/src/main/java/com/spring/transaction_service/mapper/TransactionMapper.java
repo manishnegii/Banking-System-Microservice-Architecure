@@ -8,7 +8,7 @@ import com.spring.transaction_service.dtos.PaymentGatewayLogsDTO;
 import com.spring.transaction_service.entity.Transaction;
 import com.spring.transaction_service.entity.PaymentGatewayLogs;
 
-@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
+@Mapper(componentModel = "spring")
 public interface TransactionMapper {
 
     Transaction toEntity(TransactionRequestDTO requestDTO);

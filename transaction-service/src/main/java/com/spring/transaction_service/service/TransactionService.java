@@ -3,8 +3,8 @@ package com.spring.transaction_service.service;
 import com.spring.transaction_service.client.AccountClient;
 import com.spring.transaction_service.client.dto.OperationalRequestDto;
 import com.spring.transaction_service.entity.TransactionalStatus;
-import com.spring.transaction_service.exception.TransactionFailedException;
 import feign.FeignException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.spring.transaction_service.dtos.TransactionRequestDTO;
@@ -17,29 +17,26 @@ import com.spring.transaction_service.exception.InvalidTransactionException;
 import com.spring.transaction_service.mapper.TransactionMapper;
 import com.spring.transaction_service.repository.TransactionRepository;
 
-import lombok.AllArgsConstructor;
-
 import com.spring.transaction_service.repository.PaymentGatewayLogsRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.Optional;
 
-
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class TransactionService {
 
-    boolean debitCompleted = false;
-
-    private TransactionRepository transactionRepository;
-    private PaymentGatewayLogsRepository paymentGatewayLogsRepository;
-    private TransactionMapper transactionMapper;
-    private AccountClient accountClient;
+    private final TransactionRepository transactionRepository;
+    private final PaymentGatewayLogsRepository paymentGatewayLogsRepository;
+    private final TransactionMapper transactionMapper;
+    private final AccountClient accountClient;
 
     @Transactional
     public TransactionResponseDTO transferMoney(TransactionRequestDTO requestDTO, String idempotencyKey) {
         validateTransaction(requestDTO);
+
+        boolean debitCompleted = false;
         
         Optional<Transaction> existingTransaction = transactionRepository.findByIdempotencyKey(idempotencyKey);
         if (existingTransaction.isPresent()) {

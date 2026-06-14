@@ -29,7 +29,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     @Query("SELECT t FROM Transaction t WHERE t.status = :status ORDER BY t.createdAt DESC")
     List<Transaction> findByStatus(@Param("status") String status);
 
-    @Query("SELECT t FROM Transaction t WHERE t.fromAccountId = :accountId OR t.toAccountId = :accountId ORDER BY t.createdAt DESC")
+    @Query("SELECT t FROM Transaction t WHERE t.fromAccountNumber = :accountId OR t.toAccountNumber = :accountId ORDER BY t.createdAt DESC")
     List<Transaction> findByAccountId(@Param("accountId") Long accountId);
 
     @Query("SELECT t FROM Transaction t WHERE t.merchantId = :merchantId ORDER BY t.createdAt DESC")

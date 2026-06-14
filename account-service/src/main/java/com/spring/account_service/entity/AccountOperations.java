@@ -27,6 +27,9 @@ public class AccountOperations {
     @Column(name = "operation_type")
     private OperationType operationType;
 
+    @Column(name = "status")
+    private String status;
+
     @Column(name = "amount")
     private BigDecimal amount;
 

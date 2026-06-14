@@ -73,17 +73,17 @@ public class TransactionController {
         }
     }
 
-    @GetMapping("/view-history/merchant/{merchantId}")
-    public ResponseEntity<ApiResponse<List<TransactionResponseDTO>>> viewMerchantTransactionHistory(
-            @PathVariable String merchantId) {
-        try {
-            List<TransactionResponseDTO> response = transactionService.getMerchantPayments(merchantId);
-            return ResponseEntity.ok(new ApiResponse<>(true, "Merchant transaction history retrieved successfully", response));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse<>(false, "Error retrieving merchant history", "MERCHANT_HISTORY_ERROR"));
-        }
-    }
+//    @GetMapping("/view-history/merchant/{merchantId}")
+//    public ResponseEntity<ApiResponse<List<TransactionResponseDTO>>> viewMerchantTransactionHistory(
+//            @PathVariable String merchantId) {
+//        try {
+//            List<TransactionResponseDTO> response = transactionService.getMerchantPayments(merchantId);
+//            return ResponseEntity.ok(new ApiResponse<>(true, "Merchant transaction history retrieved successfully", response));
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                    .body(new ApiResponse<>(false, "Error retrieving merchant history", "MERCHANT_HISTORY_ERROR"));
+//        }
+//    }
 
     // ======================== CHECK STATUS ========================
     @GetMapping("/check-status/{transactionId}")
@@ -143,91 +143,91 @@ public class TransactionController {
         }
     }
 
-    // ======================== MERCHANT PAYMENT ========================
-    @PostMapping("/merchant-payment")
-    public ResponseEntity<ApiResponse<TransactionResponseDTO>> merchantPayment(
-            @Valid @RequestBody TransactionRequestDTO requestDTO) {
-        try {
-            TransactionResponseDTO response = transactionService.processMerchantPayment(requestDTO);
-            return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(new ApiResponse<>(true, "Merchant payment processed successfully", response));
-        } catch (InvalidTransactionException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new ApiResponse<>(false, e.getMessage(), e.getErrorCode()));
-        } catch (DuplicateTransactionException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body(new ApiResponse<>(false, e.getMessage(), e.getErrorCode()));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse<>(false, "Error processing merchant payment", "MERCHANT_PAYMENT_ERROR"));
-        }
-    }
+//    // ======================== MERCHANT PAYMENT ========================
+//    @PostMapping("/merchant-payment")
+//    public ResponseEntity<ApiResponse<TransactionResponseDTO>> merchantPayment(
+//            @Valid @RequestBody TransactionRequestDTO requestDTO) {
+//        try {
+//            TransactionResponseDTO response = transactionService.processMerchantPayment(requestDTO);
+//            return ResponseEntity.status(HttpStatus.CREATED)
+//                    .body(new ApiResponse<>(true, "Merchant payment processed successfully", response));
+//        } catch (InvalidTransactionException e) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+//                    .body(new ApiResponse<>(false, e.getMessage(), e.getErrorCode()));
+//        } catch (DuplicateTransactionException e) {
+//            return ResponseEntity.status(HttpStatus.CONFLICT)
+//                    .body(new ApiResponse<>(false, e.getMessage(), e.getErrorCode()));
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                    .body(new ApiResponse<>(false, "Error processing merchant payment", "MERCHANT_PAYMENT_ERROR"));
+//        }
+//    }
 
-    @GetMapping("/merchant-payment/{merchantId}")
-    public ResponseEntity<ApiResponse<List<TransactionResponseDTO>>> getMerchantPayments(
-            @PathVariable String merchantId) {
-        try {
-            List<TransactionResponseDTO> response = transactionService.getMerchantPayments(merchantId);
-            return ResponseEntity.ok(new ApiResponse<>(true, "Merchant payments retrieved successfully", response));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse<>(false, "Error retrieving merchant payments", "MERCHANT_PAYMENTS_ERROR"));
-        }
-    }
-
-    // ======================== UPI/QR PAYMENTS ========================
-    @PostMapping("/upi-qr-payment")
-    public ResponseEntity<ApiResponse<TransactionResponseDTO>> upiQrPayment(
-            @Valid @RequestBody TransactionRequestDTO requestDTO) {
-        try {
-            TransactionResponseDTO response = transactionService.processUPIQRPayment(requestDTO);
-            return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(new ApiResponse<>(true, "UPI/QR payment processed successfully", response));
-        } catch (InvalidTransactionException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new ApiResponse<>(false, e.getMessage(), e.getErrorCode()));
-        } catch (DuplicateTransactionException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body(new ApiResponse<>(false, e.getMessage(), e.getErrorCode()));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse<>(false, "Error processing UPI/QR payment", "UPI_QR_ERROR"));
-        }
-    }
-
-    @GetMapping("/upi-qr-payment/{upiId}")
-    public ResponseEntity<ApiResponse<List<TransactionResponseDTO>>> getUPIQRPayments(
-            @PathVariable String upiId) {
-        try {
-            List<TransactionResponseDTO> response = transactionService.getUPIPayments(upiId);
-            return ResponseEntity.ok(new ApiResponse<>(true, "UPI/QR payments retrieved successfully", response));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse<>(false, "Error retrieving UPI/QR payments", "UPI_QR_RETRIEVE_ERROR"));
-        }
-    }
-
-    // ======================== PAYMENT GATEWAY CALLBACK ========================
-    @PostMapping("/payments-callback/{transactionId}")
-    public ResponseEntity<ApiResponse<TransactionResponseDTO>> paymentsCallback(
-            @PathVariable Long transactionId,
-            @RequestParam String gatewayTxnId,
-            @RequestParam String status,
-            @RequestParam String gatewayName,
-            @RequestParam(required = false) String requestPayload,
-            @RequestParam(required = false) String responsePayload) {
-        try {
-            TransactionResponseDTO response = transactionService.handlePaymentGatewayCallback(
-                    transactionId, gatewayTxnId, status, requestPayload, responsePayload, gatewayName);
-            return ResponseEntity.ok(new ApiResponse<>(true, "Payment gateway callback processed successfully", response));
-        } catch (TransactionNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ApiResponse<>(false, e.getMessage(), e.getErrorCode()));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse<>(false, "Error processing payment callback", "CALLBACK_ERROR"));
-        }
-    }
+//    @GetMapping("/merchant-payment/{merchantId}")
+//    public ResponseEntity<ApiResponse<List<TransactionResponseDTO>>> getMerchantPayments(
+//            @PathVariable String merchantId) {
+//        try {
+//            List<TransactionResponseDTO> response = transactionService.getMerchantPayments(merchantId);
+//            return ResponseEntity.ok(new ApiResponse<>(true, "Merchant payments retrieved successfully", response));
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                    .body(new ApiResponse<>(false, "Error retrieving merchant payments", "MERCHANT_PAYMENTS_ERROR"));
+//        }
+//    }
+//
+//    // ======================== UPI/QR PAYMENTS ========================
+//    @PostMapping("/upi-qr-payment")
+//    public ResponseEntity<ApiResponse<TransactionResponseDTO>> upiQrPayment(
+//            @Valid @RequestBody TransactionRequestDTO requestDTO) {
+//        try {
+//            TransactionResponseDTO response = transactionService.processUPIQRPayment(requestDTO);
+//            return ResponseEntity.status(HttpStatus.CREATED)
+//                    .body(new ApiResponse<>(true, "UPI/QR payment processed successfully", response));
+//        } catch (InvalidTransactionException e) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+//                    .body(new ApiResponse<>(false, e.getMessage(), e.getErrorCode()));
+//        } catch (DuplicateTransactionException e) {
+//            return ResponseEntity.status(HttpStatus.CONFLICT)
+//                    .body(new ApiResponse<>(false, e.getMessage(), e.getErrorCode()));
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                    .body(new ApiResponse<>(false, "Error processing UPI/QR payment", "UPI_QR_ERROR"));
+//        }
+//    }
+//
+//    @GetMapping("/upi-qr-payment/{upiId}")
+//    public ResponseEntity<ApiResponse<List<TransactionResponseDTO>>> getUPIQRPayments(
+//            @PathVariable String upiId) {
+//        try {
+//            List<TransactionResponseDTO> response = transactionService.getUPIPayments(upiId);
+//            return ResponseEntity.ok(new ApiResponse<>(true, "UPI/QR payments retrieved successfully", response));
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                    .body(new ApiResponse<>(false, "Error retrieving UPI/QR payments", "UPI_QR_RETRIEVE_ERROR"));
+//        }
+//    }
+//
+//    // ======================== PAYMENT GATEWAY CALLBACK ========================
+//    @PostMapping("/payments-callback/{transactionId}")
+//    public ResponseEntity<ApiResponse<TransactionResponseDTO>> paymentsCallback(
+//            @PathVariable Long transactionId,
+//            @RequestParam String gatewayTxnId,
+//            @RequestParam String status,
+//            @RequestParam String gatewayName,
+//            @RequestParam(required = false) String requestPayload,
+//            @RequestParam(required = false) String responsePayload) {
+//        try {
+//            TransactionResponseDTO response = transactionService.handlePaymentGatewayCallback(
+//                    transactionId, gatewayTxnId, status, requestPayload, responsePayload, gatewayName);
+//            return ResponseEntity.ok(new ApiResponse<>(true, "Payment gateway callback processed successfully", response));
+//        } catch (TransactionNotFoundException e) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+//                    .body(new ApiResponse<>(false, e.getMessage(), e.getErrorCode()));
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                    .body(new ApiResponse<>(false, "Error processing payment callback", "CALLBACK_ERROR"));
+//        }
+//    }
 
     @GetMapping("/payments-callback-logs/{transactionId}")
     public ResponseEntity<ApiResponse<List<PaymentGatewayLogsDTO>>> getPaymentCallbackLogs(@PathVariable Long transactionId) {

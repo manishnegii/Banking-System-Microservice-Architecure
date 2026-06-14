@@ -9,6 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 public interface AccountOperationalRepository extends JpaRepository<AccountOperations, Long> {
 
     @Modifying
-    @Query("update AccountOperation o set o.status = 'SUCCESS' where o.txnId = :txnId and o.operationType = :operationType")
+    @Query("update AccountOperations o set o.status = 'SUCCESS' where o.txnId = :txnId and o.operationType = :operationType")
     void markSuccess(String txnId,OperationType operationType);
 }
