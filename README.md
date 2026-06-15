@@ -66,6 +66,15 @@ mvn spring-boot:run
 | Notification Service | 8086 |
 | Audit Service | 8087 |
 
+## Screenshots
+
+![Register](assests/Register.png) ![Login](assests/Login.png)
+![Customer](assests/Create%20Customer%20Profile.png) ![KYC](assests/Adding%20KYC%20documents.png)
+![Admin](assests/Admin%20Login.png) ![verify](assests/Approving%20KYC.png)
+![Account](assests/Creating%20Account.png)
+![Transaction](assests/Transfer%20Money.png)
+![Tables](assests/Accounts%20table.png) ![Table](assests/Account%20Operations%20Table.png) ![Table](assests/Transactions%20Table.png)
+
 ## Architecture
 
 This system uses:
