@@ -16,12 +16,12 @@ public interface AccountClient {
     @PostMapping("api/v1/accounts/accountNumber")
     ResponseDto getAccountDetails(@RequestBody AccountRequestDto requestDto);
 
-    @PostMapping("/debit")
+    @PostMapping("/api/v1/internal/accounts/debit")
     Void debit(@Valid @RequestBody OperationalRequestDto request);
 
-    @PostMapping("/credit")
+    @PostMapping("api/v1/internal/accounts/credit")
     Void credit(@Valid @RequestBody OperationalRequestDto request);
 
-    @PostMapping("/refund")
+    @PostMapping("api/v1/internal/accounts/refund")
     Void refund(@Valid @RequestBody OperationalRequestDto request);
 }

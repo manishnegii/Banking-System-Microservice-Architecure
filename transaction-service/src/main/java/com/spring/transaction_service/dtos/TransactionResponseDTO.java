@@ -14,7 +14,7 @@ import java.util.List;
 @Builder
 public class TransactionResponseDTO {
 
-    private Long transactionId;
+    private String transactionId;
 
     private Long userId;
 

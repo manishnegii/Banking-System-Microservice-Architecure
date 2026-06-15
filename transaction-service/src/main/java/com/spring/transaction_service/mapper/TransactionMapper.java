@@ -1,6 +1,7 @@
 package com.spring.transaction_service.mapper;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 import com.spring.transaction_service.dtos.TransactionRequestDTO;
 import com.spring.transaction_service.dtos.TransactionResponseDTO;
@@ -13,6 +14,7 @@ public interface TransactionMapper {
 
     Transaction toEntity(TransactionRequestDTO requestDTO);
 
+    @Mapping(target = "paymentGatewayLogs",ignore = true)
     TransactionResponseDTO toResponseDTO(Transaction entity);
 
     PaymentGatewayLogsDTO toPaymentGatewayLogsDTO(PaymentGatewayLogs entity);

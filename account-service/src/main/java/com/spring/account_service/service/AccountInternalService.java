@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class AccountInternalService {
@@ -27,6 +29,8 @@ public class AccountInternalService {
             operation.setTxnId(requestDto.getTxnId());
             operation.setOperationType(OperationType.DEBIT);
             operation.setAmount(requestDto.getAmount());
+            operation.setStatus("SUCCESS");
+            operation.setCreatedAt(LocalDateTime.now());
 
             operationalRepository.save(operation);
         }catch (DataIntegrityViolationException e){
@@ -49,6 +53,8 @@ public class AccountInternalService {
             operation.setTxnId(requestDto.getTxnId());
             operation.setOperationType(OperationType.CREDIT);
             operation.setAmount(requestDto.getAmount());
+            operation.setStatus("SUCCESS");
+            operation.setCreatedAt(LocalDateTime.now());
 
             operationalRepository.save(operation);
         }catch (DataIntegrityViolationException e){
@@ -71,6 +77,10 @@ public class AccountInternalService {
             operation.setTxnId(requestDto.getTxnId());
             operation.setOperationType(OperationType.REFUND);
             operation.setAmount(requestDto.getAmount());
+            operation.setStatus("SUCCESS");
+            operation.setCreatedAt(LocalDateTime.now());
+
+            System.out.println(operation);
 
             operationalRepository.save(operation);
         }catch (DataIntegrityViolationException e){

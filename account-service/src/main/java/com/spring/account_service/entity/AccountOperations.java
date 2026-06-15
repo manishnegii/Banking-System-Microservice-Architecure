@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "account_operations" , uniqueConstraints = {@UniqueConstraint(columnNames = {"txnId","operationType"})})
+@Table(name = "account_operations")
 public class AccountOperations {
 
     @Id
@@ -35,4 +35,13 @@ public class AccountOperations {
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+//    @PrePersist
+//    public void prePersist(){
+//        createdAt = LocalDateTime.now();
+//        status = "SUCCESS";
+//    }
 }
+
+
+
