@@ -1,8 +1,11 @@
 package com.spring.transaction_service.controller;
 
+import com.rexchord.common_security.model.CustomUserPrincipal;
 import com.spring.transaction_service.entity.TransactionalStatus;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
@@ -21,17 +24,23 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/transactions")
-@CrossOrigin(origins = "*", maxAge = 3600)
+//@CrossOrigin(origins = "*", maxAge = 3600)
 @AllArgsConstructor
 public class TransactionController {
 
     private TransactionService transactionService;
 
+
+    @GetMapping("/debug")
+    public Object debug(){
+        return SecurityContextHolder.getContext().getAuthentication();
+    }
+
     @PostMapping("/transfer-money")
     public ResponseEntity<ApiResponse<TransactionResponseDTO>> transferMoney(
-            @Valid @RequestBody TransactionRequestDTO requestDTO, @RequestHeader("Idempotency-Key") String idempotencyKey) {
+            @Valid @RequestBody TransactionRequestDTO requestDTO, @RequestHeader("Idempotency-Key") String idempotencyKey, @AuthenticationPrincipal CustomUserPrincipal user) {
         try {
-            TransactionResponseDTO response = transactionService.transferMoney(requestDTO,idempotencyKey);
+            TransactionResponseDTO response = transactionService.transferMoney(requestDTO,idempotencyKey,user.getUserId());
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(new ApiResponse<>(true, "Money transfer initiated successfully", response));
         } catch (DuplicateTransactionException e) {

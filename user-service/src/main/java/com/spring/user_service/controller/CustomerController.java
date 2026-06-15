@@ -30,6 +30,11 @@ public class CustomerController {
         return SecurityContextHolder.getContext().getAuthentication();
     }
 
+    @GetMapping("/auth/{authId}/customer-id")
+    public Long getCustomerId(@PathVariable Long authId){
+        return customerService.getCustomerId(authId);
+    }
+
     @PostMapping
     public ResponseEntity<CreatedCustomerResponseDto> createCustomer(
             @Valid @RequestBody CustomerCreateRequestDto requestDto,

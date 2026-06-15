@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 @FeignClient(name = "user-service",configuration = FeignConfig.class)
 public interface UserClient {
 
+    @GetMapping("/api/v1/customers/auth/{authId}/customer-id")
+    Long getCustomerId(@PathVariable Long authId);
+
     @GetMapping("/api/v1/customers-docs/{customerId}/kyc-status")
     CustomerResponse getStatus(@PathVariable Long customerId);
 }

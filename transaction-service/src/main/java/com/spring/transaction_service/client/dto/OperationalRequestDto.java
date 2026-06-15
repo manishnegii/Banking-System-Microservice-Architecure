@@ -11,6 +11,6 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class OperationalRequestDto {
     private String txnId;
-    private Long accountNumber;
+    private String accountNumber;
     private BigDecimal amount;
 }

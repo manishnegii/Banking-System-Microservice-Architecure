@@ -63,6 +63,15 @@ public class CustomerService {
 //        return customerMapper.toResponseDto(customer);
 //    }
 
+    public Long getCustomerId(Long authId){
+        var customerId = customerRepository.findCustomerIdByAuthId(authId);
+        System.out.println(customerId);
+        if(customerId == null){
+            throw new CustomerNotFoundException();
+        }
+        return customerId;
+    }
+
     public CustomerResponseDto getCustomerByEmail(String email) {
         Customer customer = customerRepository.findByEmail(email)
             .orElseThrow(CustomerNotFoundException::new);

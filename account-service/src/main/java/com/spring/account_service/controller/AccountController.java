@@ -9,6 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -21,6 +22,12 @@ import java.time.LocalDate;
 public class AccountController {
 
     private final AccountService accountService;
+
+    @GetMapping("/debug")
+    public Object debug(){
+        return SecurityContextHolder.getContext().getAuthentication();
+    }
+
 
     @PostMapping("/open")
     public ResponseEntity<AccountResponseDto> openAccount(@Valid @RequestBody CreateAccountRequestDto requestDto,

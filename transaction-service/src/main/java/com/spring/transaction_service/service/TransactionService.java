@@ -1,10 +1,13 @@
 package com.spring.transaction_service.service;
 
+import com.rexchord.common_security.model.CustomUserPrincipal;
 import com.spring.transaction_service.client.AccountClient;
+import com.spring.transaction_service.client.UserClient;
 import com.spring.transaction_service.client.dto.OperationalRequestDto;
 import com.spring.transaction_service.entity.TransactionalStatus;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.spring.transaction_service.dtos.TransactionRequestDTO;
@@ -31,9 +34,10 @@ public class TransactionService {
     private final PaymentGatewayLogsRepository paymentGatewayLogsRepository;
     private final TransactionMapper transactionMapper;
     private final AccountClient accountClient;
+    private final UserClient userClient;
 
     @Transactional
-    public TransactionResponseDTO transferMoney(TransactionRequestDTO requestDTO, String idempotencyKey) {
+    public TransactionResponseDTO transferMoney(TransactionRequestDTO requestDTO, String idempotencyKey,String userId) {
         validateTransaction(requestDTO);
 
         boolean debitCompleted = false;
@@ -42,7 +46,7 @@ public class TransactionService {
         if (existingTransaction.isPresent()) {
             return transactionMapper.toResponseDTO(existingTransaction.get());
         }
-        var transaction = createPendingTransaction(idempotencyKey, requestDTO);
+        var transaction = createPendingTransaction(idempotencyKey, requestDTO, userId);
 
         try{
             accountClient.debit(new OperationalRequestDto(transaction.getTransactionId(), requestDTO.getFromAccountNumber(), requestDTO.getAmount()));
@@ -65,8 +69,13 @@ public class TransactionService {
         return transactionMapper.toResponseDTO(transaction);
     }
 
-    private Transaction createPendingTransaction(String idempotencyKey,TransactionRequestDTO requestDTO){
+    private Transaction createPendingTransaction(String idempotencyKey,TransactionRequestDTO requestDTO,String userId){
+
+        var authId = Long.valueOf(userId);
+        var customerId = userClient.getCustomerId(authId);
+
         Transaction transaction = transactionMapper.toEntity(requestDTO);
+        transaction.setUserId(customerId);
         transaction.setTransactionId(TransactionIdGenerator.generate());
         transaction.setIdempotencyKey(idempotencyKey);
         transaction.setTransactionType("TRANSFER");

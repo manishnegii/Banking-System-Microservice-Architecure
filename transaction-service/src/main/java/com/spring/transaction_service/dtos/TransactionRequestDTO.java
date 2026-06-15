@@ -14,10 +14,10 @@ import java.math.BigDecimal;
 public class TransactionRequestDTO {
 
     @NotNull(message = "From Account is required")
-    private Long fromAccountNumber;
+    private String fromAccountNumber;
 
     @NotNull(message = "To Account is required")
-    private Long toAccountNumber;
+    private String toAccountNumber;
 
     @NotNull(message = "Amount is required")
     @DecimalMin(value = "0.01", message = "Amount must be greater than 0")

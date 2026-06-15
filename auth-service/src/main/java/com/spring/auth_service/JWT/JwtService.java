@@ -33,6 +33,8 @@ public class JwtService {
                 .expiration(new Date(System.currentTimeMillis() + 1000 * tokenExpiration))
                 .build();
 
+        System.out.println(claims);
+
         return new Jwt(claims, jwtConfig.getSecretKey());
 
     }

@@ -2,7 +2,7 @@ CREATE TABLE customers(
     customer_id bigserial primary key,
     auth_id bigint not null unique,
     name varchar(255) not null,
-    role varchar(10) not null unique,
+    role varchar(10) not null,
     email varchar(255) not null unique,
     date_of_birth date,
     gender varchar(10) not null,

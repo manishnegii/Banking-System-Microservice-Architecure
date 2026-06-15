@@ -31,7 +31,10 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests( auth -> auth
                         .requestMatchers("/api/v1/customers/**").permitAll()
-                        .requestMatchers(HttpMethod.POST,"/api/v1/customers-docs/**").hasAnyRole("USER","AUDITOR")
+                        .requestMatchers(HttpMethod.POST,"/api/v1/customers-docs/*/kyc-document").hasAuthority("CUSTOMER")
+                        .requestMatchers(HttpMethod.POST,"/api/v1/customers-docs/*/approve").hasAnyAuthority("USER","AUDITOR")
+                        .requestMatchers(HttpMethod.POST,"/api/v1/customers-docs/*/reject").hasAnyAuthority("USER","AUDITOR")
+                        .requestMatchers(HttpMethod.POST,"/api/v1/customers-docs/*/review").hasAnyAuthority("USER","AUDITOR")
 
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)

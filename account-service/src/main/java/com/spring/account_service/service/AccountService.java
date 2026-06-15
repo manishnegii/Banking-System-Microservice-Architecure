@@ -39,7 +39,8 @@ public class AccountService {
 
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         var user = (CustomUserPrincipal)authentication.getPrincipal();
-        Long customerId = Long.valueOf(user.getUserId());
+        var authId = Long.valueOf(user.getUserId());
+        var customerId = userClient.getCustomerId(authId);
 
         var response = userClient.getStatus(customerId);
 
@@ -54,7 +55,7 @@ public class AccountService {
             throw new AccountAlreadyExists();
         }
         var account = accountMapper.toEntity(requestDto);
-        account.setUserId(response.getCustomerId());
+        account.setUserId(customerId);
         account.setStatus(AccountStatus.ACTIVE);
         account.setBranch(branch);
         account.setAccountNumber(numberGenerator.generate(branch,requestDto.getAccountType()));

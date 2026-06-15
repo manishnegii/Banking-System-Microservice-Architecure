@@ -65,6 +65,8 @@ public class JwtAuthFilter implements WebFilter{
 
             Authentication authentication = new UsernamePasswordAuthenticationToken(userId,null,List.of(new SimpleGrantedAuthority("ROLE_"+ role)));
 
+            System.out.println(authentication);
+
             ServerHttpRequest request = exchange
                     .getRequest()
                     .mutate()
@@ -74,8 +76,6 @@ public class JwtAuthFilter implements WebFilter{
             ServerWebExchange mutatedExchange = exchange.mutate().request(request).build();
 
             return chain.filter(mutatedExchange).contextWrite(ReactiveSecurityContextHolder.withAuthentication(authentication));
-
-//            return  chain.filter(exchange.mutate().request(request).build());
 
         } catch (Exception e) {
             exchange.getResponse().setRawStatusCode(401);
@@ -87,3 +87,4 @@ public class JwtAuthFilter implements WebFilter{
         return PUBLIC_ROUTES.stream().anyMatch(path::equals);
     }
 }
+

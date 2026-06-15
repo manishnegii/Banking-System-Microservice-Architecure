@@ -18,21 +18,13 @@ public class TransactionResponseDTO {
 
     private Long userId;
 
-    private Long fromAccountId;
+    private String fromAccountNumber;
 
-    private Long toAccountId;
+    private String toAccountNumber;
 
     private BigDecimal amount;
 
     private String transactionType;
-
-    private String paymentMethod;
-
-    private String merchantId;
-
-    private String upiId;
-
-    private String gatewayTxnId;
 
     private String status;
 

@@ -1,5 +1,3 @@
-
-
 package com.spring.transaction_service.config;
 
 import com.rexchord.common_security.filter.JwtAuthFilter;
@@ -30,6 +28,7 @@ public class SecurityConfig {
 
 
                 .authorizeHttpRequests( auth -> auth
+                        .requestMatchers("/api/v1/transactions/**").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
 
@@ -37,7 +36,6 @@ public class SecurityConfig {
                     c.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
                     c.accessDeniedHandler(((request, response, accessDeniedException) ->
                             response.setStatus(HttpStatus.FORBIDDEN.value())));});
-
 
         return http.build();
     }
